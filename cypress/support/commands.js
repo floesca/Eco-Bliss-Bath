@@ -23,3 +23,32 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+Cypress.Commands.add("login", () => {
+
+  cy.visit("/#/login")
+
+  cy.get('input[type="text"]')
+    .type("test2@test.fr")
+
+  cy.get('input[type="password"]')
+    .type("testtest")
+
+  cy.contains("Se connecter")
+    .click()
+
+})
+
+Cypress.Commands.add("product", () => {
+    const apiProducts = `${Cypress.env("apiUrl")}/products`
+  cy.request("GET", apiProducts).then((response) => {
+      const products = response.body
+
+      const randomProduct = products[
+        Math.floor(Math.random() * products.length)
+      ]
+
+      const productId = randomProduct.productId
+
+      cy.visit(`/#/products/${productId}`)
+    })
+  })
