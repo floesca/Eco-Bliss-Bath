@@ -33,8 +33,8 @@ Cypress.Commands.add("login", () => {
   cy.get('input[type="password"]')
     .type("testtest")
 
-  cy.contains("Se connecter")
-    .click()
+  cy.get("[data-cy='login-submit']")
+      .click()
 
 })
 
