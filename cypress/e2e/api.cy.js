@@ -27,3 +27,104 @@ describe("GET /products/:id", () => {
     })
   })
 })
+
+const apiLogin = `${Cypress.env("apiUrl")}/login`
+describe("POST /login", () => {
+  it("should authenticate a valid user", () => {
+    cy.request({
+        method: "POST", 
+        url: apiLogin,
+        body: {
+          username: "test2@test.fr",
+          password: "testtest"
+        }
+    }).then((response) => {
+      expect(response.status).to.eq(200)
+    })
+  })
+
+  it("should reject unknown user", () => {
+    cy.request({
+        method: "POST", 
+        failOnStatusCode: false,
+        url: apiLogin,
+        body: {
+          username: "test2@test.fr",
+          password: "mauvaisMotDePasse"
+        }
+    }).then((response) => {
+      expect(response.status).to.eq(401)
+    })
+  })
+})
+
+const apiAdd = `${Cypress.env("apiUrl")}/orders/add`
+describe("POST /orders/add", () => {
+   let token
+  before(() => {
+    cy.request({
+      method: "POST",
+      url: apiLogin,
+      body: {
+        username: "test2@test.fr",
+        password: "testtest"
+      }
+    }).then((response) => {
+      expect(response.status).to.eq(200)
+      token = response.body.token
+    })
+  })
+
+  it("should add an available product to the basket", () => {
+    cy.request({
+      method: "POST",
+      failOnStatusCode: false,
+      url: "apiAdd",
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      body: {
+        product: "3",
+        quantity: "1"
+      }
+    }).then((response) => {
+      expect(response.status).to.eq(404)
+    })
+  })
+})
+
+const apiReviews = `${Cypress.env("apiUrl")}/reviews`
+describe("POST /reviews", () => {
+    let token
+  before(() => {
+    cy.request({
+      method: "POST",
+      url: apiLogin,
+      body: {
+        username: "test2@test.fr",
+        password: "testtest"
+      }
+    }).then((response) => {
+      expect(response.status).to.eq(200)
+      token = response.body.token
+    })
+  })
+
+  it("add a review", () => {
+    cy.request({
+      method: "POST",
+      url: apiReviews,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      body: {
+        title: "Test",
+        comment: "Test",
+        rating: 5
+      }
+    }).then((response) => {
+      expect(response.status).to.eq(200)
+    })
+  })
+})
+
