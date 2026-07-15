@@ -77,18 +77,18 @@ describe("POST /orders/add", () => {
 
   it("should add an available product to the basket", () => {
     cy.request({
-      method: "POST",
+      method: "PUT",
       failOnStatusCode: false,
-      url: "apiAdd",
+      url: apiAdd,
       headers: {
         Authorization: `Bearer ${token}`
       },
       body: {
-        product: "3",
-        quantity: "1"
+        product: 5,
+        quantity: 1
       }
     }).then((response) => {
-      expect(response.status).to.eq(404)
+      expect(response.status).to.eq(200)
     })
   })
 })
