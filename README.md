@@ -51,13 +51,13 @@ npm install (si vous préférez)
 
 ## Pour installer et lancer Cypress
 
-````
+```
 npm install cypress --save-dev
 ```
 Puis
 ```
 npx cypress open
-````
+```
 
 ## Tests réalisés
 
