@@ -68,11 +68,10 @@ npx cypress open
 
 ## Organisation du projet
 
-├── cypress 
-│ ├── e2e         # Scénarios de tests 
-│ ├── fixtures    # Données utilisées dans les tests 
-│ └── support     # Commandes et configurations Cypress 
-│ 
-├── cypress.config.js 
-├── package.json 
+├── cypress\
+│   ├── e2e\
+│   ├── fixtures\
+│   └── support\
+├── cypress.config.js\
+├── package.json\
 └── README.md
