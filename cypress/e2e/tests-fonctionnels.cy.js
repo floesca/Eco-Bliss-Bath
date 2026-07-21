@@ -9,10 +9,7 @@ describe("connexion", () => {
 
 describe("basket", () => {
 
-    beforeEach(() => {
-        cy.login()
-    })
-    
+   
     it("shows disponibility", () => {
         cy.get("[data-cy='nav-link-cart']").click()
         cy.contains("Disponibilité").should("be.visible")
@@ -24,32 +21,50 @@ describe("basket", () => {
     })
 
     it("should add a product to the basket then decrease the stock", () => {
-        cy.visit("/#/products/5")
+       const productId = 5 // produit disponible
+       cy.login()
+ 
+        // On intercepte l'appel API pour être sûr que les données sont chargées
+        // avant de lire le stock affiché
+        cy.intercept("GET", `**/products/${productId}`).as("getProduct")
+ 
+        cy.visit(`/#/products/${productId}`)
+        cy.reload()
+        cy.wait("@getProduct")
+ 
+        // On lit le stock initial affiché sur la page produit
         cy.get("[data-cy='detail-product-stock']")
-        .invoke("text")
-        .then((stockText) => {
-
-            const initialStock = Number(stockText.match(/\d+/)[0])
-
-            cy.get("[data-cy='detail-product-add']").click()
-
-            cy.visit("/#/cart")
-            cy.get("[data-cy='cart-line']").should("be.visible")
-
-            cy.reload()
-
-            cy.get("[data-cy='detail-product-stock']")
+            .should(($el) => expect($el.text().trim()).to.match(/\d+/)) // évite de lire un texte vide/pas encore chargé
             .invoke("text")
-            .then((newStockText) => {
-
-                const newStock = Number(newStockText.match(/\d+/)[0])
-
-                expect(newStock).to.eq(initialStock - 1)
-
+            .then((stockText) => {
+ 
+                const initialStock = Number(stockText.match(/\d+/)[0])
+ 
+                // On ajoute le produit au panier
+                cy.get("[data-cy='detail-product-add']").click()
+                cy.wait(5000)
+                // On vérifie que le produit est bien dans le panier
+                cy.visit("/#/cart")
+                cy.get("[data-cy='cart-line']").should("be.visible")
+ 
+                // On revient sur la page produit pour lire le nouveau stock
+                cy.intercept("GET", `**/products/${productId}`).as("getProductAgain")
+                cy.visit(`/#/products/${productId}`)
+                cy.wait("@getProductAgain")
+ 
+                cy.get("[data-cy='detail-product-stock']")
+                    .should(($el) => expect($el.text().trim()).to.match(/\d+/))
+                    .invoke("text")
+                    .then((newStockText) => {
+ 
+                        const newStock = Number(newStockText.match(/\d+/)[0])
+ 
+                        expect(newStock).to.eq(initialStock - 1)
+ 
+                    })
+ 
             })
-
-        })
+ 
+    })
 
   })
-
-})

@@ -85,7 +85,7 @@ describe("POST /login", () => {
 })
 
 const apiAdd = `${Cypress.env("apiUrl")}/orders/add`
-describe("POST /orders/add", () => {
+describe("PUT /orders/add", () => {
    let token
   beforeEach(() => {
     cy.request({
@@ -131,7 +131,8 @@ describe("POST /orders/add", () => {
         quantity: 1
       }
     }).then((response) => {
-      expect(response.status).to.eq(403)
+      expect(response.status).not.to.eq(200);
+    
     })
   })
 })

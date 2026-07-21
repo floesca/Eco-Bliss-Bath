@@ -27,15 +27,14 @@ Cypress.Commands.add("login", () => {
 
   cy.visit("/#/login")
 
-  cy.get('input[type="text"]')
-    .type("test2@test.fr")
+  cy.get('[data-cy="login-input-username"]').type("test2@test.fr")
 
-  cy.get('input[type="password"]')
-    .type("testtest")
+  cy.get('[data-cy="login-input-password"]').type("testtest")
 
   cy.get("[data-cy='login-submit']")
       .click()
 
+  cy.get('[data-cy="nav-link-logout"]', { timeout: 10000 }).should("be.visible");
 })
 
 Cypress.Commands.add("product", () => {
