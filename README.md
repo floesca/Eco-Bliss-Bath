@@ -28,25 +28,19 @@ Pour démarrer cet applicatif web vous devez avoir les outils suivants:
 
 Clonez le projet pour le récupérer
 ``` 
-git clone https://github.com/OpenClassrooms-Student-Center/Eco-Bliss-Bath-V2.git
+git clone https://github.com/floesca/Eco-Bliss-Bath.git
 cd Eco-Bliss-Bath-V2
+npm install
 ```
-Pour démarrer l'API avec sa base de données
-```
-docker compose up -d
-```
+L'application fonctionne avec Docker.
 
-## Pour démarrer le frontend de l'applicatif
+Ouvrir Docker Desktop.
 
-Rendez-vous dans le dossier frontend
+Démarrer les conteneurs.
+
+Le front-end de l'application est ensuite accesible à l'adresse :
 ```
-cd ./frontend
-```
-Installez les dépendances du projet
-```
-npm i
-ou
-npm install (si vous préférez)
+http://localhost:8080
 ```
 
 ## Pour installer et lancer Cypress
@@ -54,9 +48,15 @@ npm install (si vous préférez)
 ```
 npm install cypress --save-dev
 ```
-Puis
+Puis pour ouvrir Cypress en mode interactif :
 ```
 npx cypress open
+```
+Puis sélectionner E2E Testting et le navigateur souhaité.
+
+Pour lancer tous les tests automatiquement en ligne de commande :
+```
+npx cypress run
 ```
 
 ## Tests réalisés
@@ -75,3 +75,7 @@ npx cypress open
 ├── cypress.config.js\
 ├── package.json\
 └── README.md
+
+## Auteur
+
+Florence ESCANYE

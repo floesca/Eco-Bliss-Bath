@@ -37,6 +37,24 @@ yarn-error.log
 testem.log
 /typings
 
+
 # System files
 .DS_Store
 Thumbs.db
+
+# Dependencies
+node_modules/
+
+# Cypress
+cypress/screenshots/
+cypress/videos/
+
+# Environment variables
+.env
+.env.*
+
+# Logs
+npm-debug.log*
+
+# MySQL
+/mysql
