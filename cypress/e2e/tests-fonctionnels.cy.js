@@ -82,3 +82,13 @@ describe("cart", () => {
     })
 
   })
+
+// disponibilté si authentifié
+describe("product availability if logged in", () => {
+    it("should show availability if user is logged in", () => {
+        cy.login()
+        cy.product()
+
+        cy.get("[data-cy='detail-product-stock']").should("be.visible")
+    })
+})  
