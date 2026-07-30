@@ -1,13 +1,27 @@
 // connexion et mon panier visible
-describe("connexion", () => {
-    it("can connect and show basket button", () => {
+describe("login", () => {
+    it("can log in and show cart button", () => {
         cy.login()
 
         cy.get("[data-cy='nav-link-cart']").should("be.visible")
     })
+
+    it("cannot log in with wrong credentials ", () => {
+        cy.visit("/#/login")
+
+        cy.get('[data-cy="login-input-username"]').type("mauvaistest@test.fr")
+
+        cy.get('[data-cy="login-input-password"]').type("mauvaistest")
+
+        cy.get("[data-cy='login-submit']").click()
+
+        cy.wait(3000)
+
+        cy.get("[data-cy='login-errors']").should("be.visible")
+    })
 })
 
-describe("basket", () => {
+describe("cart", () => {
 
    
     it("shows disponibility", () => {
@@ -20,7 +34,7 @@ describe("basket", () => {
         cy.get("[data-cy='detail-product-add']").should("not.be.visible")
     })
 
-    it("should add a product to the basket then decrease the stock", () => {
+    it("should add a product to the cart then decrease the stock", () => {
        const productId = 5 // produit disponible
        cy.login()
  

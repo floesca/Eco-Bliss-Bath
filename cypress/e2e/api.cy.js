@@ -1,7 +1,7 @@
 const apiOrders = `${Cypress.env("apiUrl")}/orders`
 const apiLogin = `${Cypress.env("apiUrl")}/login`
 describe("GET /orders", () => {
-  it("shouldn't get a list of products in the user's basket if not connected", () => {
+  it("shouldn't get a list of products in the user's cart if not connected", () => {
     cy.request({
       method: "GET",
       url: apiOrders,
@@ -26,7 +26,7 @@ describe("GET /orders", () => {
       })
     })
 
-  it("should get a list of the products in the user's basket if connected", () => {
+  it("should get a list of the products in the user's cart if connected", () => {
     cy.request({
       method: "GET",
       url: apiOrders,
@@ -101,7 +101,7 @@ describe("PUT /orders/add", () => {
     })
   })
 
-  it("should add an available product to the basket", () => {
+  it("should add an available product to the cart", () => {
     cy.request({
       method: "PUT",
       failOnStatusCode: false,
@@ -118,7 +118,7 @@ describe("PUT /orders/add", () => {
     })
   })
 
-  it("should not add an unavailble product to the basket", () => {
+  it("should not add an unavailble product to the cart", () => {
     cy.request({
       method: "PUT",
       failOnStatusCode: false,
