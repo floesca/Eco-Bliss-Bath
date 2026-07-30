@@ -18,3 +18,12 @@ describe("products page when logged in", () => {
     cy.contains("Ajouter au panier").click()
     })
 })
+
+// présence de la disponibilté produit
+describe("product availability", () => {
+    it("should show the availibility on a product's page", () => {
+        cy.product()
+
+        cy.get("[data-cy='detail-product-stock']").should("be.visible")
+    })
+})
