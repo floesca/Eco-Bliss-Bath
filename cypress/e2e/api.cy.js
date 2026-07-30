@@ -172,3 +172,56 @@ describe("POST /reviews", () => {
   })
 })
 
+describe("PUT /orders/add", () => {
+      let token
+  before(() => {
+    cy.request({
+      method: "POST",
+      url: apiLogin,
+      body: {
+        username: "test2@test.fr",
+        password: "testtest"
+      }
+    }).then((response) => {
+      expect(response.status).to.eq(200)
+      token = response.body.token
+    })
+  })
+
+it("cannot add product when stock is 0", () => {
+
+cy.intercept("GET", "**/products/5", {
+  statusCode: 200,
+  body: {
+    id: 5,
+    name: "Poussière de lune",
+    availableStock: 0,
+    skin: "string",
+    aromas: "string",
+    ingredients: "string",
+    description: "string",
+    price: 10,
+    picture: "string",
+    varieties: 0
+  }
+}).as("getProduct")
+
+cy.request("GET", "http://localhost:8081/products/5")
+
+cy.request({
+  method: "PUT",
+  url: "http://localhost:8081/orders/add",
+  headers: {
+    Authorization: `Bearer ${token}`
+  },
+  body: {
+    product: 5,
+    quantity: 1
+  },
+  failOnStatusCode: false
+}).then((response) => {
+  expect(response.status).to.eq(400)
+})
+
+})
+})
